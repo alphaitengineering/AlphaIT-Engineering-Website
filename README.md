@@ -1,4 +1,4 @@
-# AlphaIT Engineering — website review edition
+# AlphaIT Engineering — production website
 
 Nineteen static HTML pages. The founder-approved v2 position and current product briefs govern the copy. The site reuses Aether Mineral brand assets, Public Sans, Instrument Sans, current product identities and the Clear Route hero. No framework or paid asset dependency.
 
@@ -6,9 +6,9 @@ Nineteen static HTML pages. The founder-approved v2 position and current product
 
 Run `python build.py`, `python validate.py`, and `node --check dist/assets/js/experience.js`. The build imports public product content from the local profile builder when available. The published output is `dist/`.
 
-## Deployment boundary
+## Deployment
 
-Private review only. Production domain and DNS are unchanged. All pages currently carry noindex; robots.txt disallows indexing. Before public release, approve the preview, confirm the enquiry service works from the production origin, update canonical/social URLs to the final origin and enable indexing. A real enquiry has deliberately not been submitted during QA.
+The approved public origin is `https://alphaitengineering.com`. Public pages use that origin for canonical and social metadata, carry `index,follow`, and are listed in the generated sitemap. The existing enquiry integration remains in place; no real enquiry has been submitted during automated QA.
 
 The existing Web3Forms public access key is retained in the contact page. This is a client-facing form routing key, not a privileged server credential. Confirm domain restrictions with the account owner before release. Mail and WhatsApp links provide fallback contact paths.
 
@@ -16,8 +16,8 @@ Customer PDF only is included. Internal team documents and corporate records are
 
 ## Spatial experience and motion
 
-The homepage uses one lightweight spatial operating model to explain opportunity, system and outcome. Its state changes with the buyer-selected outcome and updates the relevant product route. Fine-pointer devices receive restrained depth; mobile receives a simplified composition with the same explanation. Keyboard arrow/Home/End navigation and reduced-motion styles are included. There is no scroll hijacking, automatic tab rotation or decorative motion without meaning.
+The homepage uses one lightweight spatial operating model to explain the buyer's goal, the AlphaIT system put to work and what becomes possible. It begins with Varren, advances through Verdika and LSI/LTI while visible, pauses during direct reading or interaction and provides a pause control. Keyboard arrow/Home/End navigation and reduced-motion styles are included. Fine-pointer devices receive restrained depth; mobile receives a simplified composition with the same explanation.
 
 ## Commercial handoff
 
-Home → outcome example → systems → dedicated product page → product-selected enquiry. Company, delivery approach, secondary PDF, email, WhatsApp and UAE/Kenya/Nigeria addresses are included. The live production website remains untouched pending approval.
+Home → outcome example → systems → dedicated product page → product-selected enquiry. Company, delivery approach, secondary PDF, email, WhatsApp and UAE/Kenya/Nigeria addresses are included.
