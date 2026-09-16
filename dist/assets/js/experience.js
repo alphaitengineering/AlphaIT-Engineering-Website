@@ -27,9 +27,9 @@
     hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--hero-x','0px');hero.style.setProperty('--hero-y','0px');});
   }
   const routes = [
-    {titles:['People report an issue.','Verdika connects the feedback.','The right people can act.'],body:['Feedback arrives, but the right team does not see it.','Capture the experience, see the pattern and route it to the responsible stakeholder.','Measure response time, recurring issues and whether feedback reaches the right team.'],name:'Verdika',icon:'verdika-mark.png',url:'verdika.html'},
-    {titles:['A lender needs a decision.','LSI and LTI connect the evidence.','The decision has a clear basis.'],body:['Financial records must be checked and assessed against the lender’s rules.','Validate the records, extract the signals and apply the lender’s eligibility and affordability policies.','See the evidence, rule, limit and reason. Measure review time and decision consistency.'],name:'LisBon Trust Infrastructure (LTI)',icon:'lisbon-icon.png',url:'lisbon-trust.html'},
-    {titles:['A business wants its own service.','LFI connects the operation.','A branded service can run.'],body:['A transport or delivery business needs connected booking, dispatch and customer updates.','Deploy the movement infrastructure around the operator’s brand, pricing and customer relationship.','See bookings, routes, delivery and settlement. Measure completion, delay and manual effort.'],name:'LisBon Flow Infrastructure (LFI)',icon:'lfi-mark.png',url:'lisbon-flow.html'}
+    {titles:['A business wants to launch a service.','LFI provides the operating foundation.','The new service can operate.'],body:['The demand exists, but the operating system behind it does not.','Deploy route, job and execution infrastructure around the organisation’s brand and operation.','Teams can assign, run and evidence the work from one operating truth.'],name:'LisBon Flow Infrastructure (LFI)',short:'LFI',icon:'lfi-mark.png',url:'lisbon-flow.html',field:['Opportunity','New service']},
+    {titles:['People keep reporting the same experience.','Verdika connects experience to responsibility.','The organisation can improve what matters.'],body:['Feedback exists across forms, messages and conversations, but the recurring pattern remains hidden.','Structure the contributions, reveal the pattern and put the finding in front of the responsible team.','Leaders can see the experience, response, action and what people report afterwards.'],name:'Verdika',short:'Verdika',icon:'verdika-mark.png',url:'verdika.html',field:['Experience','Visible improvement']},
+    {titles:['A provider needs a controlled credit decision.','LSI and LTI connect evidence to policy.','The decision can be explained and replayed.'],body:['Raw financial records cannot safely move straight into a consequential decision.','Validate the records, produce governed signals and apply the authorised trust, eligibility and exposure rules.','The institution can inspect the evidence, applicable rule, decision path and obligation state.'],name:'LisBon Trust Infrastructure (LTI)',short:'LSI + LTI',icon:'lisbon-icon.png',url:'lisbon-trust.html',field:['Governed evidence','Trusted decision']}
   ];
   const tabs = [...document.querySelectorAll('[data-route]')];
   const panel = document.getElementById('route-panel');
@@ -40,11 +40,23 @@
     document.querySelectorAll('[data-route-body]').forEach((el,j)=>el.textContent=route.body[j]);
     const icon=document.querySelector('[data-route-icon]');icon.src='assets/products/'+route.icon;
     const link=document.querySelector('[data-route-link]');link.href=route.url;link.textContent='Explore '+route.name+' ↗';
+    const product=document.querySelector('[data-field-product]');if(product)product.textContent=route.short;
+    document.querySelectorAll('[data-field-label]').forEach((el,j)=>el.textContent=route.field[j]);
     panel.setAttribute('aria-labelledby',tabs[i].id);
     panel.classList.remove('is-changing');void panel.offsetWidth;panel.classList.add('is-changing');
     if(focus)tabs[i].focus();
   }
   tabs.forEach((t,i)=>{t.addEventListener('click',()=>selectRoute(i));t.addEventListener('keydown',e=>{let n=i;if(e.key==='ArrowRight')n=(i+1)%tabs.length;else if(e.key==='ArrowLeft')n=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;else return;e.preventDefault();selectRoute(n,true);});});
+  const field=document.querySelector('.operating-field');
+  if(field && !reduced.matches && matchMedia('(pointer:fine)').matches){
+    field.addEventListener('pointermove',e=>{
+      const r=field.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      field.style.transform=`rotateX(${(-y*3).toFixed(2)}deg) rotateY(${(x*4).toFixed(2)}deg)`;
+    },{passive:true});
+    field.addEventListener('pointerleave',()=>{field.style.transform='rotateX(0deg) rotateY(0deg)';});
+  }
   const form=document.getElementById('projectForm'),status=document.getElementById('formStatus');
   const interest=document.getElementById('interest');
   const selected=new URLSearchParams(location.search).get('product');

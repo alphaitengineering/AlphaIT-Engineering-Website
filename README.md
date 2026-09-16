@@ -1,6 +1,6 @@
 # AlphaIT Engineering — website review edition
 
-19 static HTML pages. Approved 12 September customer profile is the copy baseline. Reuses the Aether Mineral brand assets, Public Sans, Instrument Sans, current product identities and Clear Route hero. No framework or paid asset dependency.
+Nineteen static HTML pages. The founder-approved v2 position and current product briefs govern the copy. The site reuses Aether Mineral brand assets, Public Sans, Instrument Sans, current product identities and the Clear Route hero. No framework or paid asset dependency.
 
 ## Build and validate
 
@@ -14,10 +14,10 @@ The existing Web3Forms public access key is retained in the contact page. This i
 
 Customer PDF only is included. Internal team documents and corporate records are not published. Product logos represent AlphaIT's own products, not customers. Sample workflows are labelled illustrative; no fabricated performance numbers, clients or endorsements are used.
 
-## Motion
+## Spatial experience and motion
 
-Gentle hero pointer depth on fine-pointer devices, viewport entry transitions and an animated operation flow. Touch users get selectable example tabs and a vertical flow. Keyboard arrow/Home/End navigation and reduced-motion styles are included. No scroll hijacking or automatic tab rotation.
+The homepage uses one lightweight spatial operating model to explain opportunity, system and outcome. Its state changes with the buyer-selected outcome and updates the relevant product route. Fine-pointer devices receive restrained depth; mobile receives a simplified composition with the same explanation. Keyboard arrow/Home/End navigation and reduced-motion styles are included. There is no scroll hijacking, automatic tab rotation or decorative motion without meaning.
 
 ## Commercial handoff
 
-Home → systems or outcome example → dedicated product page → product-selected enquiry. Company, delivery approach, PDF, email, WhatsApp and UAE/Kenya/Nigeria addresses are included. The current live production website remains untouched pending approval.
+Home → outcome example → systems → dedicated product page → product-selected enquiry. Company, delivery approach, secondary PDF, email, WhatsApp and UAE/Kenya/Nigeria addresses are included. The live production website remains untouched pending approval.
