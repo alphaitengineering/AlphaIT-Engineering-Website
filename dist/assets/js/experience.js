@@ -27,9 +27,9 @@
     hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--hero-x','0px');hero.style.setProperty('--hero-y','0px');});
   }
   const routes = [
-    {name:'Varren',short:'Varren',icon:'varren-mark.png',url:'varren.html',field:['Create new revenue','Qualified opportunities'],summary:'Varren finds the strongest commercial route, carries out approved work and improves the next move from real results.',accent:'#6f2438',glow:'#d8b46f'},
-    {name:'Verdika',short:'Verdika',icon:'verdika-mark.png',url:'verdika.html',field:['Improve the service','Accountable action'],summary:'Verdika turns people’s experience into clear patterns, puts the finding in front of the responsible team and shows what changes next.',accent:'#315a9a',glow:'#7eb9ff'},
-    {name:'LisBon Trust Infrastructure (LTI)',short:'LSI + LTI',icon:'lisbon-icon.png',url:'lisbon-trust.html',field:['Trusted evidence','Controlled decision'],summary:'LSI validates the financial evidence. LTI turns it into a decision the institution can explain, control and replay.',accent:'#134f70',glow:'#73d4f4'}
+    {name:'Varren',short:'Varren',icon:'varren-mark.png',url:'varren.html',field:['Create new revenue','Qualified opportunities'],summary:'Varren finds the strongest commercial route, carries out approved work and improves the next move from real results.',accent:'#6E1028',glow:'#B89A68'},
+    {name:'Verdika',short:'Verdika',icon:'verdika-mark.png',url:'verdika.html',field:['Improve the service','Accountable action'],summary:'Verdika turns people’s experience into clear patterns, puts the finding in front of the responsible team and shows what changes next.',accent:'#16245B',glow:'#D9A62E'},
+    {name:'LisBon Trust Infrastructure (LTI)',short:'LSI + LTI',icon:'lisbon-icon.png',url:'lisbon-trust.html',field:['Trusted evidence','Controlled decision'],summary:'LSI validates the financial evidence. LTI turns it into a decision the institution can explain, control and replay.',accent:'#24198A',glow:'#C9A45C'}
   ];
   const tabs = [...document.querySelectorAll('[data-route]')];
   const panel = document.getElementById('route-panel');
@@ -40,6 +40,13 @@
   const routeSection=document.querySelector('[data-route-section]');
   const pauseButton=document.querySelector('[data-route-pause]');
   const AUTO_DELAY=5500;
+  const routeIcons=new Map();
+  const routeIconsReady=Promise.all(routes.map(route=>new Promise(resolve=>{
+    const image=new Image();
+    image.onload=image.onerror=()=>resolve();
+    image.src='assets/products/'+route.icon;
+    routeIcons.set(route.icon,image);
+  })));
   function stopAutoplay(){clearTimeout(routeTimer);routeTimer=0;}
   function scheduleAutoplay(delay=AUTO_DELAY){
     stopAutoplay();
@@ -51,7 +58,12 @@
     if(!route||!panel||!tabs.length)return;
     routeIndex=i;
     tabs.forEach((t,j)=>{t.setAttribute('aria-selected',String(i===j));t.tabIndex=i===j?0:-1;});
-    const icon=document.querySelector('[data-route-icon]');if(icon)icon.src='assets/products/'+route.icon;
+    const icon=document.querySelector('[data-route-icon]');
+    if(icon){
+      const prepared=routeIcons.get(route.icon);
+      icon.src=prepared?.complete&&prepared.naturalWidth?prepared.src:'assets/products/'+route.icon;
+      icon.closest('.field-core')?.classList.toggle('is-lisbon',route.short==='LSI + LTI');
+    }
     const link=document.querySelector('[data-route-link]');if(link){link.href=route.url;link.textContent='Explore '+route.name+' ↗';}
     const product=document.querySelector('[data-field-product]');if(product)product.textContent=route.short;
     const storyLabel=document.querySelector('[data-route-story-label]');if(storyLabel)storyLabel.textContent=route.short+' in action';
@@ -72,7 +84,7 @@
   }
   pauseButton?.addEventListener('click',()=>{routePaused=!routePaused;routeSection?.classList.toggle('is-paused',routePaused);pauseButton.setAttribute('aria-pressed',String(routePaused));pauseButton.textContent=routePaused?'Resume automatic preview':'Pause automatic preview';if(routePaused)stopAutoplay();else scheduleAutoplay();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAutoplay();else scheduleAutoplay();});
-  if(panel&&tabs.length)selectRoute(0);
+  if(panel&&tabs.length)routeIconsReady.then(()=>selectRoute(0));
   const field=document.querySelector('.operating-field');
   if(field && !reduced.matches && matchMedia('(pointer:fine)').matches){
     field.addEventListener('pointermove',e=>{
