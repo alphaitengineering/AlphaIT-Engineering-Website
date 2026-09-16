@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true" focusable="false" data-ait-family="proofline-24" data-ait-name="audit-trail" data-ait-variant="outline" color="#11171D">
+  <title>audit trail</title>
+  <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7v10M8 7h7M8 12h7M8 17h4"/><circle cx="8" cy="7" r="1"/><circle cx="8" cy="12" r="1"/><circle cx="8" cy="17" r="1"/></g>
+  <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 17l1.5 1.5 3-4"/></g>
+</svg>
