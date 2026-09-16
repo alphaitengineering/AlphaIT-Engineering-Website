@@ -16,7 +16,7 @@ Customer PDF only is included. Internal team documents and corporate records are
 
 ## Spatial experience and motion
 
-The homepage uses one lightweight spatial operating model to explain the buyer's goal, the AlphaIT system put to work and what becomes possible. It begins with Varren, advances through Verdika and LSI/LTI while visible, pauses during direct reading or interaction and provides a pause control. Keyboard arrow/Home/End navigation and reduced-motion styles are included. Fine-pointer devices receive restrained depth; mobile receives a simplified composition with the same explanation.
+The homepage uses one lightweight spatial operating model to explain intent, the AlphaIT system put to work and the outcome. It begins with Varren and advances through Verdika and LSI/LTI every 5.5 seconds while visible, with direct selection and a pause control. Keyboard arrow/Home/End navigation and reduced-motion styles are included. Fine-pointer devices receive restrained depth; mobile receives a simplified composition with the same explanation. The architectural Clear Route hero remains visible on desktop and mobile.
 
 ## Commercial handoff
 
