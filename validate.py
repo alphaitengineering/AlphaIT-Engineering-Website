@@ -16,7 +16,9 @@ class Page(HTMLParser):
    if k in a:self.refs.append(a[k])
   if tag=='img' and 'alt' not in a:errors.append(f'{self.path.name}: missing image alt')
 pages={}
+VERIFICATION=re.compile(r'^google[0-9a-f]{16}\.html$')  # Search Console ownership token, not a page
 for path in root.glob('*.html'):
+ if VERIFICATION.match(path.name):continue
  p=Page(path);p.feed(path.read_text(encoding='utf-8'));pages[path.name]=p
  if p.h1!=1:errors.append(f'{path.name}: expected one h1, found {p.h1}')
 for name,p in pages.items():

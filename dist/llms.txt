@@ -1,0 +1,48 @@
+# AlphaIT Engineering
+
+> Product engineering company that builds, deploys and licenses the systems businesses, institutions and governments run on. Operating across Kenya, Nigeria and the United Arab Emirates.
+
+AlphaIT Engineering starts from a system it has already engineered, connects it to the tools and data an organisation already runs, and engineers only the capability that is still missing.
+
+- Legal entity (contracting): Alpha Innovation Technologies - F.Z.C, Free Zone Company, Ajman Free Zone, United Arab Emirates. Licence and registration number 33549, first issued 31 January 2024.
+- Legal entity (Nigeria): Alpha Innovation Technologies Ltd, CAC registration number 7450573, incorporated 17 April 2024.
+- Founder and enterprise architect: Alpha Lucky Chukwunwike Okechukwu, who also founded LisBon Platforms and LisBonFARM.
+- Locations: Ajman Free Zone, United Arab Emirates. Nairobi, Kenya. Lagos, Nigeria.
+- Contact: projects@alphaitengineering.com
+- Brand line: Product Engineering. Without Limits.
+
+## Systems engineered by AlphaIT
+
+- [Verdika](https://alphaitengineering.com/verdika.html): See what people experience. Fix what matters next. Experience intelligence and accountability. For: Businesses, institutions and public bodies that need to understand customer, employee or public experience.
+- [Varren](https://alphaitengineering.com/varren.html): Tell Varren what needs to happen. Governed organisational execution. For: Organisations that need research, plans, content, approvals and authorised commercial action to work together.
+- [Varren Aegis](https://alphaitengineering.com/varren-aegis.html): Attack your platform first. Prove the fix. Platform assurance. For: Teams responsible for live websites, platforms and digital services.
+- [Varren Herald](https://alphaitengineering.com/varren-herald.html): Bring customers back with something true to say. Measured customer re-engagement. For: Service businesses and platform teams that want to bring customers back for a useful, timely reason.
+- [LisBon Signal Infrastructure (LSI)](https://alphaitengineering.com/lisbon-signal.html): Make financial records trustworthy. Financial data-truth infrastructure. For: Banks, lenders, fintechs and teams that need reliable signals from financial records.
+- [LisBon Trust Infrastructure (LTI)](https://alphaitengineering.com/lisbon-trust.html): Make every credit decision explainable. Trust and credit decision infrastructure. For: Banks, lenders, fintechs and capital providers assessing individuals, businesses or institutions.
+- [LisCredit Marketplace](https://alphaitengineering.com/liscredit.html): Bring qualified demand and the right capital together. Credit marketplace infrastructure. For: Marketplace operators, banks, lenders, funds, fintechs and platforms that want to launch, embed or participate in a controlled credit marketplace.
+- [Trust App](https://alphaitengineering.com/trust-app.html): Your bank statement, turned into trust. Consumer financial trust application. For: Lenders and institutions that need a clear financial-profile and credit-application journey for customers.
+- [LisBon Flow Infrastructure (LFI)](https://alphaitengineering.com/lisbon-flow.html): Give recurring physical operations one operating truth. Route operations infrastructure. For: Transport, logistics and delivery businesses that want connected operations under their own brand.
+- [Flow App](https://alphaitengineering.com/flow-app.html): Run work on the move from one operating view. Operations application. For: Transport and logistics businesses that need a connected booking and service experience for customers and drivers.
+- [Pollenair](https://alphaitengineering.com/pollenair.html): Make practical learning and capability visible. Practical capability infrastructure. For: Institutions, employers and sponsors running practical skills programmes.
+- [Focused AlphaIT Build](https://alphaitengineering.com/business-systems-engineering.html): Engineer the missing system behind your next opportunity. Focused product engineering. For: Organisations whose service, process or new offering cannot be served fully by an existing system.
+
+## Pages
+
+- [Home](https://alphaitengineering.com/): what AlphaIT makes possible and how an engagement works.
+- [Our systems](https://alphaitengineering.com/platforms.html): every engineered system and who each is for.
+- [How we work](https://alphaitengineering.com/engagements.html): deploy a ready system, connect what exists, engineer what is missing.
+- [Company](https://alphaitengineering.com/company.html): business model, entities and locations.
+- [Founder](https://alphaitengineering.com/founder.html): Alpha Lucky Chukwunwike Okechukwu, founder and enterprise architect.
+- [Contact](https://alphaitengineering.com/contact.html): enquiry form, email and WhatsApp.
+
+## Related platforms founded by Alpha Lucky Chukwunwike Okechukwu
+
+- LisBon Platforms (https://lisbonplatforms.com): multi-sector infrastructure group. AlphaIT engineers the LisBon products; LisBon Platforms owns and operates them.
+- LisBonFARM (https://lisbonfarm.com): agro-industrial infrastructure platform, sponsor of AgroGlobal ICPI in Edo State, Nigeria.
+- Verdika (https://verdika.co): the live public application of the Verdika experience and accountability platform.
+
+## What AlphaIT does not claim
+
+- Deployment scope, integrations, data permissions, timing and commercial terms are agreed per organisation and are not published.
+- Product measures are what a deployment can make visible, not guaranteed results.
+- AlphaIT builds, hosts and licenses these systems. It does not operate them on its own behalf, so it publishes no usage figures of its own.
