@@ -154,7 +154,7 @@ def header(current=''):
 def close(title='What could work better?', text='Show us the operation, missed opportunity or new service you have in mind. We will help you find the right starting point.'):
  return f'<section class="closing"><div class="closing-kicker"><img src="assets/brand/AlphaIT_Alpha_Aperture_Reverse_Pearl.svg" width="38" height="38" alt=""><p class="eyebrow">Your next step</p></div><h2>{title}</h2><p>{text}</p><div class="actions">{action("Show us the opportunity","contact.html","light")}<a class="text-link" href="engagements.html">See how we work <span aria-hidden="true">↗</span></a></div><div class="closing-rule"></div><a class="closing-email" href="mailto:projects@alphaitengineering.com">projects@alphaitengineering.com {arrow}</a></section>'
 def footer():
- return '<footer><div class="footer-top"><a class="footer-brand" href="index.html">AlphaIT Engineering</a><p>Product Engineering.<br>Without Limits.</p><div><a href="AlphaIT-Company-and-Product-Profile.pdf" target="_blank" rel="noopener">Company &amp; product profile ↗</a><a href="founder.html">Founder ↗</a><a href="https://wa.me/254792989676" target="_blank" rel="noopener">WhatsApp ↗</a><a href="contact.html">Start a conversation ↗</a></div></div><div class="addresses"><div><h3>United Arab Emirates</h3><p>Alpha Innovation Technologies - F.Z.C<br>B.C. 1301279, Ajman Free Zone C1 Building<br>Ajman Free Zone, Ajman<br>United Arab Emirates</p></div><div><h3>Kenya</h3><p>Neptune, Mararo Road<br>Lavington, Nairobi<br>Kenya</p></div><div><h3>Nigeria</h3><p>Polaris Bank Building<br>30 Marina Street, CMS Bus Stop<br>Lagos Island, Nigeria</p></div></div><div class="footer-bottom"><span>© 2026 AlphaIT Engineering</span><a href="mailto:projects@alphaitengineering.com">projects@alphaitengineering.com</a><a href="privacy.html">Privacy notice</a><a href="terms.html">Terms of use</a><a href="https://alphaitengineering.com">alphaitengineering.com ↗</a></div></footer>'
+ return '<footer><div class="footer-top"><a class="footer-brand" href="index.html">AlphaIT Engineering</a><p>Product Engineering.<br>Without Limits.</p><div><a href="AlphaIT-Company-and-Product-Profile.pdf" target="_blank" rel="noopener">Company &amp; product profile ↗</a><a href="founder.html">Founder ↗</a><a href="https://wa.me/254792989676" target="_blank" rel="noopener">WhatsApp ↗</a><a href="contact.html">Start a conversation ↗</a></div></div><div class="addresses"><div><h3><a href="uae.html">United Arab Emirates ↗</a></h3><p>Alpha Innovation Technologies - F.Z.C<br>B.C. 1301279, Ajman Free Zone C1 Building<br>Ajman Free Zone, Ajman<br>United Arab Emirates</p></div><div><h3><a href="kenya.html">Kenya ↗</a></h3><p>Neptune, Mararo Road<br>Lavington, Nairobi<br>Kenya</p></div><div><h3><a href="nigeria.html">Nigeria ↗</a></h3><p>Polaris Bank Building<br>30 Marina Street, CMS Bus Stop<br>Lagos Island, Nigeria</p></div></div><div class="footer-bottom"><span>© 2026 AlphaIT Engineering</span><a href="mailto:projects@alphaitengineering.com">projects@alphaitengineering.com</a><a href="privacy.html">Privacy notice</a><a href="terms.html">Terms of use</a><a href="https://alphaitengineering.com">alphaitengineering.com ↗</a></div></footer>'
 
 SITE='https://alphaitengineering.com/'
 SHARE=SITE+'assets/brand/AlphaIT_Aether_Mineral_OpenGraph.png'
@@ -173,6 +173,9 @@ SEO = {
  'engagements.html':('How We Work: Deploy, Connect, Engineer | AlphaIT','Three delivery routes: deploy a ready AlphaIT system, connect the tools you already run, or engineer the missing capability. Measures agreed before work starts.'),
  'contact.html':('Contact AlphaIT Engineering | Kenya, Nigeria, UAE','Tell us the service, revenue opportunity or operation you want to improve. Enquiries answered from Nairobi, Lagos and Ajman. Email, WhatsApp or the form below.'),
  'founder.html':('Alpha Lucky Chukwunwike Okechukwu | Founder, AlphaIT','Infrastructure and enterprise architect. Founder of AlphaIT Engineering, LisBon Platforms and LisBonFARM, sponsor of a 1,200 TPD cassava processing facility.'),
+ 'kenya.html':('Software and Product Engineering Company in Kenya | AlphaIT','AlphaIT Engineering builds and deploys business systems for organisations in Kenya and East Africa, from Nairobi. Feedback platforms, credit infrastructure, logistics and custom builds.'),
+ 'nigeria.html':('Software and Product Engineering Company in Nigeria | AlphaIT','AlphaIT Engineering builds and deploys business systems for lenders, institutions and operators in Nigeria and West Africa, from Lagos. Credit decisioning, feedback, logistics, custom builds.'),
+ 'uae.html':('Software and Product Engineering Company in the UAE | AlphaIT','AlphaIT Engineering builds and deploys business systems for organisations in Dubai, Abu Dhabi and the wider Gulf. Licensed in Ajman Free Zone. Platform assurance, credit infrastructure, custom builds.'),
  'privacy.html':('Privacy Notice | AlphaIT Engineering','What AlphaIT Engineering collects through this website, why, who it is shared with and the rights you have over it. Contact projects@alphaitengineering.com.'),
  'terms.html':('Website Terms of Use | AlphaIT Engineering','The terms on which AlphaIT Engineering makes this website available, what the content means and does not mean, and the limits of what is published here.'),
  'proof.html':('Systems Built by AlphaIT Engineering','Every system AlphaIT Engineering has engineered, with what each one carries and who it is built for.'),
@@ -373,6 +376,63 @@ terms='''<section class="page-intro"><p class="eyebrow">Legal</p><h1>Website <em
  'We try to keep the site accurate and available, but we do not guarantee that it is free of error or that it will always be reachable.'])+legal_block('Law.',[
  'These terms, and anything arising from them, are governed by the law of the United Arab Emirates, without affecting any right you have under the law of the country you live in.'])+close('Talk to us about<br>the real thing.','The website is the summary. The agreement, the scope and the acceptance checks are set out in writing for each engagement.')
 
+# Country pages. A single site cannot rank in three markets on one homepage, because
+# Google ranks local intent by proximity and by what the page itself says about where
+# the work happens. Each page below names the market, the entity standing behind the
+# work there and the systems that market actually buys. Nothing claims a client, a
+# delivered result or a presence that does not exist.
+COUNTRIES=[
+ {'file':'kenya.html','country':'Kenya','code':'KE','city':'Nairobi','region':'East Africa',
+  'neighbours':'Uganda, Tanzania and Rwanda',
+  'lede':'AlphaIT Engineering works with businesses, institutions and public bodies in Kenya, from Nairobi, and across East Africa.',
+  'presence':'AlphaIT operates from Nairobi and serves Kenya, Uganda, Tanzania and Rwanda. Work is contracted through Alpha Innovation Technologies - F.Z.C, licence 33549, Ajman Free Zone, United Arab Emirates.',
+  'focus':[('Verdika','Experience and accountability. Verdika is live in Kenya as a public application for rating leaders, institutions and services, and the same platform is deployed for organisations that need to understand customer, employee or member experience.'),
+           ('Varren Aegis','Platform assurance for Kenyan fintechs, platforms and service businesses: watch a live platform, attack it deliberately, and hold every finding open until the check that found it passes again.'),
+           ('LisBon Flow','Transport, logistics and field service operators who run routes, jobs and drivers across calls, messages and spreadsheets, and need one operating view instead.'),
+           ('Focused AlphaIT Build','A system engineered around a Kenyan operation that no existing product carries, built to acceptance checks agreed before the work starts.')],
+  'faq':[('Does AlphaIT Engineering work in Kenya?','Yes. AlphaIT operates from Nairobi and serves organisations across Kenya, and from there Uganda, Tanzania and Rwanda. Verdika, one of the systems AlphaIT engineered, is live in Kenya.'),
+         ('Where is AlphaIT Engineering located in Kenya?','Nairobi. Enquiries are answered at projects@alphaitengineering.com.'),
+         ('What kind of software does AlphaIT build for Kenyan businesses?','Experience and feedback platforms, platform security and assurance, credit and financial trust infrastructure, transport and logistics operations systems, practical training records, and focused custom builds where no existing system fits.'),
+         ('Who contracts the work in Kenya?','Alpha Innovation Technologies - F.Z.C, a free zone company licensed in Ajman, United Arab Emirates, licence and registration number 33549.'),
+         ('Can AlphaIT work with a Kenyan organisation that already has systems?','Yes. The usual route is to connect what already exists and engineer only the part that is missing, rather than replace a working system.')]},
+ {'file':'nigeria.html','country':'Nigeria','code':'NG','city':'Lagos','region':'West Africa',
+  'neighbours':'Ghana and the wider West African market',
+  'lede':'AlphaIT Engineering works with lenders, institutions and operators in Nigeria, from Lagos, and across West Africa.',
+  'presence':'AlphaIT operates from Polaris Bank Building, 30 Marina Street, Lagos Island, Lagos. The Nigerian entity is Alpha Innovation Technologies Ltd, CAC registration number 7450573, incorporated 17 April 2024.',
+  'focus':[('LisBon Trust Infrastructure','Credit decisioning for Nigerian banks, lenders and fintechs: trust, eligibility, authorisation, exposure and obligations governed so every decision can be explained, replayed and defended.'),
+           ('LisBon Signal Infrastructure','Bank statements and financial records validated and structured before they reach a lending decision, with the source, the confidence and the exceptions preserved.'),
+           ('LisCredit Marketplace','Qualified demand and participating capital brought into one governed marketplace, deployed for an operator, embedded in an existing platform or joined as a provider.'),
+           ('Focused AlphaIT Build','A system engineered around a Nigerian operation that no existing product carries, built to acceptance checks agreed before the work starts.')],
+  'faq':[('Does AlphaIT Engineering work in Nigeria?','Yes. AlphaIT operates from Lagos through Alpha Innovation Technologies Ltd, CAC registration number 7450573, and serves Nigeria and the wider West African market including Ghana.'),
+         ('Where is AlphaIT Engineering located in Nigeria?','Polaris Bank Building, 30 Marina Street, CMS Bus Stop, Lagos Island, Lagos. Enquiries are answered at projects@alphaitengineering.com.'),
+         ('What does AlphaIT build for Nigerian lenders?','Infrastructure for credit decisioning and financial trust: LisBon Signal Infrastructure for validating financial records, LisBon Trust Infrastructure for governing the decision itself, and LisCredit for bringing qualified demand and capital providers together.'),
+         ('Is the software built for Nigerian regulation?','The systems are built so that the evidence, the applicable rule, the authority for each action and what happened afterwards are preserved as separate inspectable records. Deployment is subject to applicable law, agreed policy and the authority of each institution.'),
+         ('Can AlphaIT connect to systems a Nigerian institution already runs?','Yes. Where a core system is already in place, AlphaIT connects to it through approved integrations and engineers only the missing capability.')]},
+ {'file':'uae.html','country':'United Arab Emirates','code':'AE','city':'Dubai','region':'the Gulf',
+  'neighbours':'Saudi Arabia and Qatar',
+  'lede':'AlphaIT Engineering works with organisations in Dubai, Abu Dhabi and the wider Gulf, licensed in Ajman Free Zone.',
+  'presence':'The contracting entity is Alpha Innovation Technologies - F.Z.C, a free zone company licensed by the Free Zones Authority of Ajman, licence and registration number 33549, first issued 31 January 2024, at B.C. 1301279, Ajman Free Zone C1 Building. Work is delivered across the United Arab Emirates, Saudi Arabia and Qatar.',
+  'focus':[('Varren Aegis','Platform assurance for Gulf platforms and digital services: deliberate adversarial pressure across access, data, scale, integrations, business logic and billing, with every finding held open until a repeat check passes.'),
+           ('LisBon Trust Infrastructure','Decision infrastructure for institutions that must show why a decision was made, under what authority, and what followed from it.'),
+           ('Verdika','Experience and accountability for organisations and public bodies that need to understand what people experience and show what was done about it.'),
+           ('Focused AlphaIT Build','A system engineered around a Gulf operation that no existing product carries, built to acceptance checks agreed before the work starts.')],
+  'faq':[('Is AlphaIT Engineering a UAE company?','Yes. Alpha Innovation Technologies - F.Z.C is a free zone company licensed by the Free Zones Authority of Ajman, licence and registration number 33549, first issued 31 January 2024. It is the contracting entity for AlphaIT Engineering.'),
+         ('Does AlphaIT work with companies in Dubai?','Yes. The licensed premises are in Ajman Free Zone and work is delivered across Dubai, Abu Dhabi and the wider Gulf, including Saudi Arabia and Qatar.'),
+         ('What software does AlphaIT build for organisations in the Gulf?','Platform security and assurance, decision and credit infrastructure, experience and accountability platforms, operations systems for movement and field work, and focused custom builds.'),
+         ('Can AlphaIT deliver in Saudi Arabia?','Yes, as part of the Gulf coverage from the UAE entity. Delivery is subject to applicable law, the data permissions available and the authority of the organisation involved.'),
+         ('How does an engagement start?','Describe the service, revenue opportunity or operation to be improved. AlphaIT identifies the strongest starting point, the evidence required and the measures that will show the change, before any build is agreed.')]},
+]
+
+def country_page(c):
+ body=f'''<section class="page-intro"><p class="eyebrow">AlphaIT Engineering in {e(c['country'])}</p><h1>Systems for {e(c['country'])}.<br>Built to <em>be examined.</em></h1><p class="lede">{e(c['lede'])}</p><div class="actions">{action('Show us the opportunity','contact.html')}<a class="text-link" href="platforms.html">Explore the systems ↗</a></div></section><section class="section company-story"><div><p class="eyebrow">Presence</p><h2>Where the work<br>is done from.</h2></div><div><p>{e(c['presence'])}</p><p>AlphaIT deploys a system it has already engineered where one fits, connects it to the tools and data an organisation already runs, and engineers only the part that is still missing.</p></div></section><section class="section depth-section"><div class="section-head"><div><p class="eyebrow">What {e(c['country'])} buys</p><h2>The systems that<br>fit this market.</h2></div><p>Every deployment agrees scope, integrations, data permissions, responsibilities and acceptance checks before the work starts.</p></div>'''+capability_grid(c['focus'])+'</section>'+faq_section(c['faq'],f"Questions from<br>{e(c['country'])}.")+close(f"Put a system to work<br>in {e(c['country'])}.",'Tell us the service, opportunity or operation. We will identify the strongest starting point and what has to be true for it to work.')
+ page(c['file'],body=body,schema=[
+  faq_schema(c['faq']),
+  breadcrumbs([('Home',''),(c['country'],c['file'])]),
+  {'@type':'Service','name':f"Product engineering in {c['country']}",'provider':{'@id':ORG_ID},'areaServed':{'@type':'Country','name':c['country']},'serviceType':'Software and product engineering','description':c['lede']},
+ ])
+
+for c in COUNTRIES: country_page(c)
+
 page('privacy.html',body=privacy,schema=[breadcrumbs([('Home',''),('Privacy notice','privacy.html')])])
 page('terms.html',body=terms,schema=[breadcrumbs([('Home',''),('Website terms of use','terms.html')])])
 
@@ -412,6 +472,9 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 - [How we work]({SITE}engagements.html): deploy a ready system, connect what exists, engineer what is missing.
 - [Company]({SITE}company.html): business model, entities and locations.
 - [Founder]({SITE}founder.html): Alpha Lucky Chukwunwike Okechukwu, founder and enterprise architect.
+- [Kenya]({SITE}kenya.html): what AlphaIT does in Kenya and East Africa, from Nairobi.
+- [Nigeria]({SITE}nigeria.html): what AlphaIT does in Nigeria and West Africa, from Lagos.
+- [United Arab Emirates]({SITE}uae.html): what AlphaIT does in the UAE and the wider Gulf, licensed in Ajman Free Zone.
 - [Contact]({SITE}contact.html): enquiry form, email and WhatsApp.
 
 ## Related platforms founded by Alpha Lucky Chukwunwike Okechukwu
@@ -436,7 +499,7 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 # Bing Webmaster Tools ownership, site added 2 October 2026 under the same account.
 # Both methods again: the meta tag above and this file. Do not remove either.
 (OUT/'BingSiteAuth.xml').write_text('<?xml version="1.0"?>\n<users>\n\t<user>88FC7D77598749E72F6C4ECA833929ED</user>\n</users>\n',encoding='utf-8')
-public_routes=['','platforms.html']+[p['slug']+'.html' for p in products]+['company.html','founder.html','engagements.html','contact.html','proof.html','privacy.html','terms.html']
+public_routes=['','platforms.html']+[p['slug']+'.html' for p in products]+['company.html','founder.html','engagements.html','contact.html','proof.html']+[c['file'] for c in COUNTRIES]+['privacy.html','terms.html']
 sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join(f'  <url><loc>https://alphaitengineering.com/{route}</loc></url>\n' for route in public_routes)+'</urlset>\n'
 (OUT/'sitemap.xml').write_text(sitemap,encoding='utf-8')
 (ROOT/'products.json').write_text(json.dumps(products,ensure_ascii=False,indent=2),encoding='utf-8')

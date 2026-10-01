@@ -33,6 +33,9 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 - [How we work](https://alphaitengineering.com/engagements.html): deploy a ready system, connect what exists, engineer what is missing.
 - [Company](https://alphaitengineering.com/company.html): business model, entities and locations.
 - [Founder](https://alphaitengineering.com/founder.html): Alpha Lucky Chukwunwike Okechukwu, founder and enterprise architect.
+- [Kenya](https://alphaitengineering.com/kenya.html): what AlphaIT does in Kenya and East Africa, from Nairobi.
+- [Nigeria](https://alphaitengineering.com/nigeria.html): what AlphaIT does in Nigeria and West Africa, from Lagos.
+- [United Arab Emirates](https://alphaitengineering.com/uae.html): what AlphaIT does in the UAE and the wider Gulf, licensed in Ajman Free Zone.
 - [Contact](https://alphaitengineering.com/contact.html): enquiry form, email and WhatsApp.
 
 ## Related platforms founded by Alpha Lucky Chukwunwike Okechukwu
