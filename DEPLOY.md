@@ -86,3 +86,36 @@ OpenAI Sites keeps saved versions. Select the last known good version and deploy
 - Never recover files from `90_REVIEW_BEFORE_DELETION\2026-09-19_Superseded_Website_Sources`.
 - Never edit `AlphaIT_Brand\AlphaIT_Brand_System` as part of a website deployment.
 - Confirm the custom domain remains attached after every deployment.
+
+---
+
+## Hosting moved to Cloudflare Pages, 2 October 2026
+
+**The site is no longer published through OpenAI Sites.** The founder ran out of Codex credits, which was the only route to that platform, and nothing built on 1 and 2 October could reach the public. Hosting moved to Cloudflare Pages, in the same Cloudflare account that already holds the DNS for the domain.
+
+| Item | Value |
+| --- | --- |
+| Cloudflare account | `Alphaitengineering@gmail.com's Account`, id `3e9c62ca023402d625ee78a499c96618` |
+| Pages project | `alphait-site` |
+| Project URL | `https://alphait-site.pages.dev` |
+| Custom domain | `alphaitengineering.com`, CNAME to `alphait-site.pages.dev`, added 2 October 2026 |
+| Production branch | `main` |
+
+### Deploy command
+
+Run from this repository root after `python build.py` and `python validate.py`:
+
+```bash
+npx --yes wrangler@4 pages deploy dist --project-name alphait-site --branch main --commit-dirty=true
+```
+
+Wrangler holds an OAuth token for the account in `C:\Users\alpha\.wrangler`. **No API key is read from any file and none belongs in this repository.** If the token loses a scope, `npx wrangler@4 login` re-issues it; the consent page must be approved in a browser signed in to that Cloudflare account.
+
+**Two traps, both hit on the first run:**
+
+- Wrangler writes a `wrangler.jsonc` into the working directory and derives the project name from the folder name. `AlphaIT Engineering Website` contains spaces and capitals, so it produced an invalid name and every later command failed on the stray file rather than on the real problem. **Delete any `wrangler.jsonc` it leaves behind**, in this folder and in the parent.
+- `pages project create` now delegates to Cloudflare Workers and fails. **Create the project once with `--force`**, which uses the Pages path directly. Do not pass `--force` afterwards.
+
+### The OpenAI Sites project
+
+`appgprj_6aaa8ad1178881918aadb2aa33de03de` still exists and still holds the old version. It is the rollback if the Pages move ever has to be undone. **Nothing deploys to it any more.** The exact sequence it needed is preserved above this section.
