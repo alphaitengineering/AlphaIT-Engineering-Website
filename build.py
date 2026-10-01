@@ -207,23 +207,39 @@ def webpage_schema(file,title,description,canonical):
  return {'@type':'WebPage','@id':canonical+'#webpage','url':canonical,'name':title,'description':description,'inLanguage':'en','isPartOf':{'@id':SITE+'#website'},'about':{'@id':ORG_ID}}
 
 def breadcrumbs(items):
- return {'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':i,'name':n,'item':SITE+u} for i,(n,u) in enumerate(items,1)]}
+ return {'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':i,'name':n,'item':SITE+(u if not u.endswith('.html') else route(u))} for i,(n,u) in enumerate(items,1)]}
 
 def faq_schema(pairs):
  return {'@type':'FAQPage','mainEntity':[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in pairs]}
 
 def software_schema(p):
- return {'@type':'SoftwareApplication','@id':SITE+p['slug']+'.html#software','name':p['name'],'applicationCategory':'BusinessApplication','applicationSubCategory':p['index'],'operatingSystem':'Web','url':SITE+p['slug']+'.html','description':p['description'],'audience':{'@type':'Audience','audienceType':p['buyer']},'publisher':{'@id':ORG_ID},'author':{'@id':ORG_ID},'offers':{'@type':'Offer','availability':'https://schema.org/InStock','priceSpecification':{'@type':'PriceSpecification','description':'Licensing, deployment and support are quoted per organisation.'}}}
+ return {'@type':'SoftwareApplication','@id':SITE+p['slug']+'#software','name':p['name'],'applicationCategory':'BusinessApplication','applicationSubCategory':p['index'],'operatingSystem':'Web','url':SITE+p['slug'],'description':p['description'],'audience':{'@type':'Audience','audienceType':p['buyer']},'publisher':{'@id':ORG_ID},'author':{'@id':ORG_ID},'offers':{'@type':'Offer','availability':'https://schema.org/InStock','priceSpecification':{'@type':'PriceSpecification','description':'Licensing, deployment and support are quoted per organisation.'}}}
+
+# Cloudflare Pages serves `foo.html` at `/foo` and permanently redirects `/foo.html`
+# to it. There is no way to switch that off, so the site speaks in the URLs the host
+# actually serves: canonical tags, Open Graph, the sitemap, llms.txt and every internal
+# link drop the extension. The files on disk keep their `.html` names because that is
+# what Pages reads. Leaving the extension in would have put a redirect on every click
+# and pointed every canonical at a URL that redirects somewhere else.
+def route(file):
+ return '' if file=='index.html' else file[:-5]
+
+INTERNAL_LINK=re.compile(r'href="(?!https?:|mailto:|#)([A-Za-z0-9._-]+)\.html(#[^"]*)?"')
+def clean_links(text):
+ def swap(m):
+  name,frag=m.group(1),m.group(2) or ''
+  return f'href="{"index.html" if False else ("/" if name=="index" else name)}{frag}"'
+ return INTERNAL_LINK.sub(swap,text)
 
 def page(file,title=None,description=None,body='',current='',schema=None):
- canonical=SITE+('' if file=='index.html' else file)
+ canonical=SITE+route(file)
  seo=SEO.get(file)
  title=seo[0] if seo else title
  description=seo[1] if seo else description
  graph=[org_schema(),website_schema(),webpage_schema(file,title,description,canonical)]+(schema or [])
  ld=json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False,separators=(',',':'))
  text=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)}</title><meta name="description" content="{e(description)}"><meta name="theme-color" content="#f7f3ec"><meta name="google-site-verification" content="-JqnNTZhqYh5QK5QHDFkJa1HnYm9St2_NLLwIKCQtO8"><meta name="msvalidate.01" content="88FC7D77598749E72F6C4ECA833929ED"><meta property="og:type" content="website"><meta property="og:site_name" content="AlphaIT Engineering"><meta property="og:locale" content="en"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(description)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SHARE}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="AlphaIT Engineering"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}"><meta name="twitter:description" content="{e(description)}"><meta name="twitter:image" content="{SHARE}"><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1"><link rel="canonical" href="{canonical}"><link rel="icon" href="assets/brand/AlphaIT_Favicon.svg"><link rel="preload" href="assets/fonts/InstrumentSans-Medium.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="assets/css/experience.css"><script src="assets/js/experience.js" defer></script>{ANALYTICS}<script type="application/ld+json">{ld}</script></head><body>{header(current)}<main id="main">{body}</main>{footer()}</body></html>'''
- (OUT/file).write_text(text,encoding='utf-8')
+ (OUT/file).write_text(clean_links(text),encoding='utf-8')
 
 def product_card(p):
  return f'<a class="product-card" href="{p["slug"]}.html" style="--product:#{p["accent"]}"><div class="product-top"><img src="assets/products/{p["icon"]}" alt="" width="56" height="56" loading="lazy"><span class="card-arrow" aria-hidden="true">↗</span></div><p class="product-name">{e(p["name"])}</p><h3>{e(p["promise"])}</h3><span class="product-category">{e(p["index"])}</span></a>'
@@ -292,7 +308,7 @@ HOME_FAQ=[
  ('How does an engagement start?','Describe the service, revenue opportunity or operation you want to improve. AlphaIT identifies the strongest starting point, the evidence required and the measures that will show the change, before any build is agreed.'),
 ]
 page('index.html',body=home+faq_section(HOME_FAQ,'What people ask<br>about AlphaIT.'),schema=[faq_schema(HOME_FAQ)])
-page('platforms.html',body=catalog,current='Our systems',schema=[breadcrumbs([('Home',''),('Our systems','platforms.html')]),{'@type':'ItemList','name':'Systems engineered by AlphaIT Engineering','itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':SITE+p['slug']+'.html'} for i,p in enumerate(products,1)]}])
+page('platforms.html',body=catalog,current='Our systems',schema=[breadcrumbs([('Home',''),('Our systems','platforms.html')]),{'@type':'ItemList','name':'Systems engineered by AlphaIT Engineering','itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':SITE+p['slug']} for i,p in enumerate(products,1)]}])
 
 for p in products:
  body=f'''<section class="product-hero" style="--product:#{p['accent']}"><a class="back-link" href="platforms.html">← All systems</a><div class="product-identity"><img src="assets/products/{p['icon']}" width="78" height="78" alt=""><p>{e(p['name'])}</p></div><div class="product-hero-grid"><div><h1>{e(p['promise'])}</h1><div class="actions">{action('Discuss '+('your build' if p['icon_key']=='alphait' else 'a deployment'),'contact.html?product='+p['slug'])}<a class="text-link" href="#system-in-action">See how it works ↓</a></div></div><div class="product-summary"><p>{e(p['description'])}</p><div class="for-label">Who it is for</div><p>{e(p['buyer'])}</p></div></div></section><section class="section product-workflow" id="system-in-action"><p class="eyebrow">The system in action</p><h2>See the work<br>change state.</h2><div class="workflow-columns">'''+''.join(f'<article><span class="step-number">0{i}</span><h3>{title}</h3><p>{e(p[key])}</p></article>' for i,title,key in [(1,'The situation','situation'),(2,'The system at work','system'),(3,'The outcome','visible')])+f'''</div><div class="measure-panel"><p class="eyebrow">Agree what success looks like</p><h3>Make the improvement visible.</h3><p>{e(p['measure'])}</p><span>Measures are agreed for each deployment. They are not guaranteed results.</span></div></section>'''+product_depth(p)+'''<section class="section product-next"><div><p class="eyebrow">From fit to deployment</p><h2>Your work.<br>Your requirements.</h2></div><div><p>We confirm the people, data, connections, authority and operating conditions required. Then we agree scope, delivery stages, acceptance checks and support.</p><p>Where the ready system does not fully fit, AlphaIT can engineer the missing connection or capability.</p>'''+('<p>Credit providers retain their decisions and capital risk. Deployment is subject to applicable law, agreed policy and the authority of each participating institution.</p>' if p['icon_key'] in ['lsi','lisbon','liscredit'] else '')+f'''</div></section>'''+close('Put '+('your opportunity' if p['icon_key']=='alphait' else e(p['name']))+'<br>to work.','Show us the use case. We will demonstrate the relevant operating route and agree the strongest next step.')
@@ -316,7 +332,7 @@ assert key, 'Existing contact-form key missing; do not replace with fake service
 contact='''<section class="page-intro contact-intro"><p class="eyebrow">Your next step</p><h1>What do you want<br>to <em>make possible?</em></h1><p class="lede">A revenue opportunity. A better service. A stronger operation. A new system. Tell us the outcome.</p></section><section class="section contact-layout"><div class="contact-details"><p class="eyebrow">Speak with AlphaIT</p><h2>You bring the outcome.<br>We find the route.</h2><p>You do not need a technical brief or product name. A clear description of what should improve or launch, who it serves and why it matters is enough to begin.</p><a class="contact-line" href="mailto:projects@alphaitengineering.com"><span aria-hidden="true">✉</span><span>projects@alphaitengineering.com</span></a><a class="contact-line" href="https://wa.me/254792989676" target="_blank" rel="noopener"><span aria-hidden="true">↗</span><span>Message us on WhatsApp</span></a><a class="text-link" href="AlphaIT-Company-and-Product-Profile.pdf" target="_blank" rel="noopener">Download the company profile ↗</a></div><form id="projectForm" action="https://api.web3forms.com/submit" method="POST"><input type="hidden" name="access_key" value="'''+e(key.group(1))+'''"><input type="hidden" name="subject" value="AlphaIT website project enquiry"><input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" aria-hidden="true"><div class="form-pair"><label>Your name<input name="name" autocomplete="name" required maxlength="150"></label><label>Organisation<input name="company" autocomplete="organization" required maxlength="200"></label></div><label>Work email<input type="email" name="email" autocomplete="email" required maxlength="254"></label><label>Phone / WhatsApp <span>(optional)</span><input type="tel" name="phone" autocomplete="tel" maxlength="60"></label><label>What do you want to achieve?<select name="interest" id="interest"><option value="">Help me find the right starting point</option><option value="opportunity">Find or develop a new opportunity</option><option value="revenue">Create revenue or recover demand</option><option value="launch">Launch a new service</option><option value="service">Improve a service or operation</option><option value="cost">Reduce cost or delay</option><option value="problem">Solve a known problem</option><option value="missing">Find what we may be missing</option><option value="connect">Deploy or connect an AlphaIT system</option>'''+''.join(f'<option value="{p["slug"]}">{e(p["name"])}</option>' for p in products)+'''</select></label><label>What should improve or launch?<textarea name="message" rows="5" required maxlength="5000" placeholder="Tell us the outcome, who it serves and what is standing in the way."></textarea></label><p class="form-note">We use your details only to respond. Do not send passwords, financial records or other sensitive documents.</p><button type="submit" class="button primary">Send your enquiry <span aria-hidden="true">↗</span></button><p id="formStatus" role="status" aria-live="polite"></p></form></section>'''
 contact=contact.replace('What do you want<br>to <em>make possible?</em>','What should happen<br><em>next?</em>')
 contact=contact.replace('</option value="connect">','</option><option value="connect">')
-page('contact.html',body=contact,schema=[breadcrumbs([('Home',''),('Contact','contact.html')]),{'@type':'ContactPage','url':SITE+'contact.html','about':{'@id':ORG_ID}}])
+page('contact.html',body=contact,schema=[breadcrumbs([('Home',''),('Contact','contact.html')]),{'@type':'ContactPage','url':SITE+'contact','about':{'@id':ORG_ID}}])
 page('404.html',body='<section class="page-intro"><p class="eyebrow">404 / Page not found</p><h1>Let’s get you<br>back on track.</h1><div class="actions">'+action('Back to AlphaIT','index.html')+'<a class="text-link" href="platforms.html">Explore our systems ↗</a></div></section>')
 # Preserve the old proof route as the product proof catalogue; the site's real work is its portfolio.
 page('proof.html',body=catalog,current='Our systems')
@@ -338,7 +354,7 @@ founder_body='''<section class="page-intro"><p class="eyebrow">Founder and archi
  ('LisBonFARM','Agro-industrial infrastructure platform and sponsor of AgroGlobal ICPI, an integrated cassava processing facility in Edo State, Nigeria, designed at 1,200 tonnes of fresh roots per day across three uniform processing lines, with food-grade native starch at roughly 90,000 tonnes a year at design basis. Issuer LISBONFARM LTD, RC 8508608.'),
 ])+'''</section><section class="section proof-band"><div><p class="eyebrow">The record</p><h2>Dated, registered<br>and verifiable.</h2></div><div><p>Alpha Innovation Technologies - F.Z.C licensed in Ajman Free Zone, United Arab Emirates, first issued 31 January 2024, licence and registration number 33549.</p><p>Alpha Innovation Technologies Ltd incorporated in Nigeria on 17 April 2024, CAC registration number 7450573.</p><p>LISBONFARM LTD incorporated in Nigeria in May 2025, RC 8508608, as sponsor and developer of AgroGlobal ICPI, now in development with a primary equity raise of up to twenty million United States dollars in progress.</p><p>Verdika live in Kenya as the first public application of the experience and accountability platform. The LisBon trust stack, Flow infrastructure and Pollenair engineered and in deployment across Nigeria and Kenya.</p><p class="boundary-note">Project figures are design basis and development status, not delivered results. Detailed evidence is available to qualified parties under the applicable process.</p></div></section><section class="section company-story"><div><p class="eyebrow">How he works</p><h2>Refuse the easier option.</h2></div><div><p>Three rules govern the engineering across every platform. Never weaken one part of a system to make another part pass. Never take the easier option when the harder one is correct. Never let a finding be owned by nobody.</p><p>They sound like principles. In practice they are build decisions: a duplicate participant is refused rather than quietly accepted, a check that cannot pass is fixed at its cause rather than switched off, and a system that returns nothing is proven to still serve the person entitled to see something.</p><p>It is why the systems can be sold to buyers who will be cross-examined about a number.</p></div></section>'''+faq_section(FOUNDER_FAQ,'About<br>Alpha Lucky Okechukwu.')+close('Build something<br>that holds up.','Bring the operation, the opportunity or the institution. AlphaIT will architect the system it actually requires.')
 page('founder.html',body=founder_body,current='Company',schema=[
- {'@type':'Person','@id':FOUNDER_ID,'name':'Alpha Lucky Chukwunwike Okechukwu','alternateName':['Alpha Lucky Okechukwu','Alpha Okechukwu','Lucky Chukwunwike Okechukwu','Alpha Lucky'],'givenName':'Alpha','additionalName':'Lucky Chukwunwike','familyName':'Okechukwu','jobTitle':'Founder and Enterprise Architect','description':'Infrastructure and enterprise architect. Founder of AlphaIT Engineering, LisBon Platforms and LisBonFARM.','url':SITE+'founder.html','email':'projects@alphaitengineering.com','worksFor':{'@id':ORG_ID},'founder':[{'@id':ORG_ID}],'sameAs':['https://lisbonplatforms.com','https://lisbonfarm.com'],'knowsAbout':['Enterprise architecture','Infrastructure architecture','Credit decisioning infrastructure','Identity verification','Platform security assurance','Agro-industrial infrastructure','Product engineering'],'workLocation':[{'@type':'Place','name':'Ajman Free Zone, United Arab Emirates'},{'@type':'Place','name':'Nairobi, Kenya'},{'@type':'Place','name':'Lagos, Nigeria'}]},
+ {'@type':'Person','@id':FOUNDER_ID,'name':'Alpha Lucky Chukwunwike Okechukwu','alternateName':['Alpha Lucky Okechukwu','Alpha Okechukwu','Lucky Chukwunwike Okechukwu','Alpha Lucky'],'givenName':'Alpha','additionalName':'Lucky Chukwunwike','familyName':'Okechukwu','jobTitle':'Founder and Enterprise Architect','description':'Infrastructure and enterprise architect. Founder of AlphaIT Engineering, LisBon Platforms and LisBonFARM.','url':SITE+'founder','email':'projects@alphaitengineering.com','worksFor':{'@id':ORG_ID},'founder':[{'@id':ORG_ID}],'sameAs':['https://lisbonplatforms.com','https://lisbonfarm.com'],'knowsAbout':['Enterprise architecture','Infrastructure architecture','Credit decisioning infrastructure','Identity verification','Platform security assurance','Agro-industrial infrastructure','Product engineering'],'workLocation':[{'@type':'Place','name':'Ajman Free Zone, United Arab Emirates'},{'@type':'Place','name':'Nairobi, Kenya'},{'@type':'Place','name':'Lagos, Nigeria'}]},
  faq_schema(FOUNDER_FAQ),
  breadcrumbs([('Home',''),('Company','company.html'),('Founder','founder.html')]),
 ])
@@ -463,19 +479,19 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 
 ## Systems engineered by AlphaIT
 
-{chr(10).join(f"- [{p['name']}]({SITE}{p['slug']}.html): {p['promise']} {p['index']}. For: {p['buyer']}" for p in products)}
+{chr(10).join(f"- [{p['name']}]({SITE}{p['slug']}): {p['promise']} {p['index']}. For: {p['buyer']}" for p in products)}
 
 ## Pages
 
 - [Home]({SITE}): what AlphaIT makes possible and how an engagement works.
-- [Our systems]({SITE}platforms.html): every engineered system and who each is for.
-- [How we work]({SITE}engagements.html): deploy a ready system, connect what exists, engineer what is missing.
-- [Company]({SITE}company.html): business model, entities and locations.
-- [Founder]({SITE}founder.html): Alpha Lucky Chukwunwike Okechukwu, founder and enterprise architect.
-- [Kenya]({SITE}kenya.html): what AlphaIT does in Kenya and East Africa, from Nairobi.
-- [Nigeria]({SITE}nigeria.html): what AlphaIT does in Nigeria and West Africa, from Lagos.
-- [United Arab Emirates]({SITE}uae.html): what AlphaIT does in the UAE and the wider Gulf, licensed in Ajman Free Zone.
-- [Contact]({SITE}contact.html): enquiry form, email and WhatsApp.
+- [Our systems]({SITE}platforms): every engineered system and who each is for.
+- [How we work]({SITE}engagements): deploy a ready system, connect what exists, engineer what is missing.
+- [Company]({SITE}company): business model, entities and locations.
+- [Founder]({SITE}founder): Alpha Lucky Chukwunwike Okechukwu, founder and enterprise architect.
+- [Kenya]({SITE}kenya): what AlphaIT does in Kenya and East Africa, from Nairobi.
+- [Nigeria]({SITE}nigeria): what AlphaIT does in Nigeria and West Africa, from Lagos.
+- [United Arab Emirates]({SITE}uae): what AlphaIT does in the UAE and the wider Gulf, licensed in Ajman Free Zone.
+- [Contact]({SITE}contact): enquiry form, email and WhatsApp.
 
 ## Related platforms founded by Alpha Lucky Chukwunwike Okechukwu
 
@@ -499,7 +515,7 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 # Bing Webmaster Tools ownership, site added 2 October 2026 under the same account.
 # Both methods again: the meta tag above and this file. Do not remove either.
 (OUT/'BingSiteAuth.xml').write_text('<?xml version="1.0"?>\n<users>\n\t<user>88FC7D77598749E72F6C4ECA833929ED</user>\n</users>\n',encoding='utf-8')
-public_routes=['','platforms.html']+[p['slug']+'.html' for p in products]+['company.html','founder.html','engagements.html','contact.html','proof.html']+[c['file'] for c in COUNTRIES]+['privacy.html','terms.html']
+public_routes=['','platforms']+[p['slug'] for p in products]+['company','founder','engagements','contact','proof']+[route(c['file']) for c in COUNTRIES]+['privacy','terms']
 sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join(f'  <url><loc>https://alphaitengineering.com/{route}</loc></url>\n' for route in public_routes)+'</urlset>\n'
 (OUT/'sitemap.xml').write_text(sitemap,encoding='utf-8')
 (ROOT/'products.json').write_text(json.dumps(products,ensure_ascii=False,indent=2),encoding='utf-8')

@@ -25,7 +25,11 @@ for name,p in pages.items():
  for ref in p.refs:
   u=urlsplit(ref)
   if u.scheme or u.netloc:continue
-  target=(p.path.parent/unquote(u.path)) if u.path else p.path
+  # Cloudflare Pages serves `foo.html` at `/foo`, so an extensionless internal link
+  # is correct and resolves to the file of that name plus `.html`.
+  raw=unquote(u.path)
+  if raw and not Path(raw).suffix: raw=raw.strip('/')+'.html' if raw.strip('/') else 'index.html'
+  target=(p.path.parent/raw) if u.path else p.path
   if not target.exists():errors.append(f'{name}: missing {ref}')
   if u.fragment and target.name in pages and u.fragment not in pages[target.name].ids:errors.append(f'{name}: missing anchor {ref}')
 for css in (root/'assets/css').glob('experience.css'):
