@@ -2,6 +2,7 @@
 from pathlib import Path
 import ast, html, json, re
 from PIL import Image
+from articles import ARTICLES
 
 ROOT = Path(__file__).parent
 OUT = ROOT / 'dist'
@@ -149,7 +150,7 @@ def action(label, href, style='primary'):
  return f'<a class="button {style}" href="{e(href)}">{label}{arrow}</a>'
 def header(current=''):
  def link(name, href): return f'<a href="{href}"'+(' aria-current="page"' if current==name else '')+f'>{name}</a>'
- return '<a class="skip" href="#main">Skip to content</a><header class="header" data-header><a class="identity" href="index.html" aria-label="AlphaIT Engineering home"><img src="assets/brand/AlphaIT_Alpha_Aperture_Mono_Carbon.svg" alt="" width="30" height="30"><span>AlphaIT Engineering</span></a><button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="main-nav">Menu <span aria-hidden="true">＋</span></button><nav id="main-nav" aria-label="Main navigation">'+link('Our systems','platforms.html')+link('How we work','engagements.html')+link('Company','company.html')+link('Founder','founder.html')+'<a class="nav-contact" href="contact.html">Let’s talk '+arrow+'</a></nav></header>'
+ return '<a class="skip" href="#main">Skip to content</a><header class="header" data-header><a class="identity" href="index.html" aria-label="AlphaIT Engineering home"><img src="assets/brand/AlphaIT_Alpha_Aperture_Mono_Carbon.svg" alt="" width="30" height="30"><span>AlphaIT Engineering</span></a><button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="main-nav">Menu <span aria-hidden="true">＋</span></button><nav id="main-nav" aria-label="Main navigation">'+link('Our systems','platforms.html')+link('How we work','engagements.html')+link('Insights','insights.html')+link('Company','company.html')+link('Founder','founder.html')+'<a class="nav-contact" href="contact.html">Let’s talk '+arrow+'</a></nav></header>'
 
 def close(title='What could work better?', text='Show us the operation, missed opportunity or new service you have in mind. We will help you find the right starting point.'):
  return f'<section class="closing"><div class="closing-kicker"><img src="assets/brand/AlphaIT_Alpha_Aperture_Reverse_Pearl.svg" width="38" height="38" alt=""><p class="eyebrow">Your next step</p></div><h2>{title}</h2><p>{text}</p><div class="actions">{action("Show us the opportunity","contact.html","light")}<a class="text-link" href="engagements.html">See how we work <span aria-hidden="true">↗</span></a></div><div class="closing-rule"></div><a class="closing-email" href="mailto:projects@alphaitengineering.com">projects@alphaitengineering.com {arrow}</a></section>'
@@ -176,6 +177,7 @@ SEO = {
  'kenya.html':('Software and Product Engineering Company in Kenya | AlphaIT','AlphaIT Engineering builds and deploys business systems for organisations in Kenya and East Africa, from Nairobi. Feedback platforms, credit infrastructure, logistics and custom builds.'),
  'nigeria.html':('Software and Product Engineering Company in Nigeria | AlphaIT','AlphaIT Engineering builds and deploys business systems for lenders, institutions and operators in Nigeria and West Africa, from Lagos. Credit decisioning, feedback, logistics, custom builds.'),
  'uae.html':('Software and Product Engineering Company in the UAE | AlphaIT','AlphaIT Engineering builds and deploys business systems for organisations in Dubai, Abu Dhabi and the wider Gulf. Licensed in Ajman Free Zone. Platform assurance, credit infrastructure, custom builds.'),
+ 'insights.html':('Insights on Systems, Credit, Assurance and Feedback | AlphaIT','Writing from AlphaIT Engineering on what a credit decision has to prove, how to test a platform before someone else does, feedback that survives a challenge, and when to buy rather than build.'),
  'privacy.html':('Privacy Notice | AlphaIT Engineering','What AlphaIT Engineering collects through this website, why, who it is shared with and the rights you have over it. Contact projects@alphaitengineering.com.'),
  'terms.html':('Website Terms of Use | AlphaIT Engineering','The terms on which AlphaIT Engineering makes this website available, what the content means and does not mean, and the limits of what is published here.'),
  'proof.html':('Systems Built by AlphaIT Engineering','Every system AlphaIT Engineering has engineered, with what each one carries and who it is built for.'),
@@ -193,6 +195,9 @@ SEO = {
  'pollenair.html':('Skills Training and Capability Tracking | Pollenair','Pollenair turns learning activity, practical work and demonstrated progress into a record of what a person can actually do, for employers, sponsors and institutions.'),
  'business-systems-engineering.html':('Custom Software Engineering in Kenya and Nigeria | AlphaIT','When no existing system fits, AlphaIT maps the real operation, finds the missing capability and engineers it around acceptance checks you agree before the build.'),
 }
+
+for _a in ARTICLES:
+ SEO[_a['slug']+'.html']=(_a['title']+' | AlphaIT',_a['description'])
 
 ORG_ID=SITE+'#organization'
 FOUNDER_ID=SITE+'founder.html#person'
@@ -359,6 +364,36 @@ page('founder.html',body=founder_body,current='Founder',schema=[
  breadcrumbs([('Home',''),('Founder','founder.html')]),
 ])
 
+# Articles. Article schema carries the founder as the named author, because an
+# unattributed article is worth less to a reader and to a search engine than a signed
+# one, and the author here is the person the company is trying to make known.
+def article_page(a):
+ url=SITE+a['slug']
+ body=(f'''<section class="page-intro"><p class="eyebrow">{e(a['eyebrow'])}</p><h1>{a['heading']}</h1><p class="lede">{e(a['lede'])}</p><p class="form-note">Published {a['published']} by Alpha Lucky Chukwunwike Okechukwu, founder of AlphaIT Engineering. <a class="text-link" href="founder.html">About the author ↗</a></p></section>'''
+  + a['body']
+  + faq_section(a['faq'],'Questions this<br>article answers.')
+  + close('Put this to work<br>in your operation.','Tell us what you need to improve or launch. We will identify the strongest starting point and the evidence required to move forward.'))
+ page(a['slug']+'.html',body=body,current='Insights',schema=[
+  {'@type':'Article','@id':url+'#article','headline':a['title'],'description':a['description'],'url':url,
+   'datePublished':a['published'],'dateModified':a['updated'],'inLanguage':'en',
+   'author':{'@id':FOUNDER_ID},'publisher':{'@id':ORG_ID},'image':SHARE,
+   'mainEntityOfPage':{'@id':url+'#webpage'},'isAccessibleForFree':True},
+  faq_schema(a['faq']),
+  breadcrumbs([('Home',''),('Insights','insights.html'),(a['title'],a['slug']+'.html')]),
+ ])
+
+for _a in ARTICLES: article_page(_a)
+
+insights=('''<section class="page-intro"><p class="eyebrow">Insights</p><h1>Written for the<br>people who will be <em>asked why.</em></h1><p class="lede">Not announcements. What we have had to work out in order to build systems that survive being questioned, written for the person who has to answer for the result.</p></section><section class="section catalog-section"><div class="catalog-label"><span>AlphaIT Engineering</span><span>'''+str(len(ARTICLES))+''' articles</span></div><div class="capability-grid">'''
+ + ''.join(f'<article><h3><a href="{a["slug"]}.html">{e(a["title"])}</a></h3><p>{e(a["description"])}</p><p class="form-note">{a["published"]}</p></article>' for a in ARTICLES)
+ + '</div></section>'
+ + close('Ask us the question<br>the article does not answer.','Show us the service, opportunity or operation. We will identify the strongest starting point and the evidence required to move forward.'))
+page('insights.html',body=insights,current='Insights',schema=[
+ breadcrumbs([('Home',''),('Insights','insights.html')]),
+ {'@type':'Blog','@id':SITE+'insights#blog','name':'AlphaIT Engineering Insights','url':SITE+'insights','publisher':{'@id':ORG_ID},
+  'blogPost':[{'@type':'BlogPosting','headline':a['title'],'url':SITE+a['slug'],'datePublished':a['published'],'author':{'@id':FOUNDER_ID}} for a in ARTICLES]},
+])
+
 # Legal pages. These describe what the site actually does: a static site, a Web3Forms
 # enquiry form and Google Analytics. If any of those three change, change this page in
 # the same commit. A privacy notice that describes a site we no longer run is worse
@@ -492,6 +527,7 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 - [Nigeria]({SITE}nigeria): what AlphaIT does in Nigeria and West Africa, from Lagos.
 - [United Arab Emirates]({SITE}uae): what AlphaIT does in the UAE and the wider Gulf, licensed in Ajman Free Zone.
 - [Contact]({SITE}contact): enquiry form, email and WhatsApp.
+- [Insights]({SITE}insights): articles on credit decisions, platform assurance, verified feedback and buy-or-build.
 
 ## Related platforms founded by Alpha Lucky Chukwunwike Okechukwu
 
@@ -515,7 +551,7 @@ AlphaIT Engineering starts from a system it has already engineered, connects it 
 # Bing Webmaster Tools ownership, site added 2 October 2026 under the same account.
 # Both methods again: the meta tag above and this file. Do not remove either.
 (OUT/'BingSiteAuth.xml').write_text('<?xml version="1.0"?>\n<users>\n\t<user>88FC7D77598749E72F6C4ECA833929ED</user>\n</users>\n',encoding='utf-8')
-public_routes=['','platforms']+[p['slug'] for p in products]+['company','founder','engagements','contact','proof']+[route(c['file']) for c in COUNTRIES]+['privacy','terms']
+public_routes=['','platforms']+[p['slug'] for p in products]+['company','founder','engagements','contact','proof','insights']+[a['slug'] for a in ARTICLES]+[route(c['file']) for c in COUNTRIES]+['privacy','terms']
 sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join(f'  <url><loc>https://alphaitengineering.com/{route}</loc></url>\n' for route in public_routes)+'</urlset>\n'
 (OUT/'sitemap.xml').write_text(sitemap,encoding='utf-8')
 (ROOT/'products.json').write_text(json.dumps(products,ensure_ascii=False,indent=2),encoding='utf-8')
