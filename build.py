@@ -27,10 +27,11 @@ LIVE = {
  'Varren':('https://varren.co','varren.co'),
  'LisBon Signal Infrastructure (LSI)':('https://www.lisbonplatforms.com/technologies','lisbonplatforms.com/technologies'),
  'LisBon Trust Infrastructure (LTI)':('https://www.lisbonplatforms.com/technologies','lisbonplatforms.com/technologies'),
- 'Trust App':('https://www.lisbonplatforms.com/app','lisbonplatforms.com/app'),
- 'LisCredit Marketplace':('https://www.lisbonplatforms.com/app#marketplace','lisbonplatforms.com/app'),
+ 'Trust App':('https://www.lisbonplatforms.com/download','lisbonplatforms.com/download'),
+ 'LisCredit Marketplace':('https://www.lisbonplatforms.com/app','lisbonplatforms.com/app'),
  'LisBon Flow Infrastructure (LFI)':('https://www.lisbonplatforms.com/flow','lisbonplatforms.com/flow'),
  'Flow App':('https://www.lisbonplatforms.com/flow','lisbonplatforms.com/flow'),
+ 'Pollenair':('https://www.pollenair.com','www.pollenair.com'),
 }
 
 ICONS = {'verdika':'verdika-mark','varren':'varren-mark','aegis':'varren-aegis-mark','herald':'varren-herald-mark','lsi':'lsi-mark','lisbon':'lisbon-icon','liscredit':'liscredit-mark','lfi':'lfi-mark','flow':'flow-mark','pollenair':'pollenair-mark','alphait':'alphait-mark'}
@@ -185,7 +186,7 @@ ANALYTICS=f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_I
 # The page heading stays the brand sentence; the title tag does the ranking work.
 # Each title carries the search phrase first, the product or company name last.
 SEO = {
- 'index.html':('AlphaIT Engineering | Product Engineering in Kenya and Nigeria','Product engineering company serving Kenya, Nigeria and the UAE. We deploy ready systems, connect your existing tools and engineer the capability you are missing.'),
+ 'index.html':('Product Engineering Company in Kenya, Nigeria & UAE | AlphaIT','Product engineering company serving Kenya, Nigeria and the UAE. We deploy ready systems, connect your existing tools and engineer the capability you are missing.'),
  'platforms.html':('Enterprise Software Systems and Platforms | AlphaIT','Twelve engineered systems for feedback, operations, platform security, credit decisioning, logistics and training. License, deploy, integrate or extend each one.'),
  'company.html':('About AlphaIT Engineering | Nairobi, Lagos and Ajman','AlphaIT Engineering builds and deploys the systems businesses, institutions and governments run on. Registered in the UAE and Nigeria, operating across Kenya.'),
  'engagements.html':('How We Work: Deploy, Connect, Engineer | AlphaIT','Three delivery routes: deploy a ready AlphaIT system, connect the tools you already run, or engineer the missing capability. Measures agreed before work starts.'),
@@ -295,10 +296,10 @@ def livewall():
   live=LIVE.get(p['name'])
   if not live or live[1] in seen: continue
   seen.add(live[1])
-  # Grouped by the destination a reader can SEE, not by the URL. Trust App and
-  # LisCredit share lisbonplatforms.com/app and only LisCredit carries a fragment;
-  # two tiles printing the same domain would read as a mistake. The tile goes to the
-  # page, the fragment stays on LisCredit's own product page where it is precise.
+  # Grouped by the destination a reader can SEE, not by the URL. LSI and LTI share
+  # lisbonplatforms.com/technologies, and LFI and Flow App share /flow; two tiles
+  # printing the same domain would read as a mistake, so they combine into one.
+  # The tile goes to the shared page.
   group=[q for q in products if LIVE.get(q['name'],(None,None))[1]==live[1]]
   href=min((LIVE[q['name']][0] for q in group),key=len)
   tiles.append(f'<a href="{href}" target="_blank" rel="noopener"><img src="assets/products/{p["icon"]}" alt="" width="42" height="42" loading="lazy"><span>{e(" & ".join(q["name"] for q in group))}<em>{e(live[1])} ↗</em></span></a>')
